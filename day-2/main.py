@@ -12,6 +12,14 @@ class Cubes:
         else:
             self.green = count
 
+    def get_count(self, color: str):
+        if color == 'red':
+            return self.red
+        elif color == 'blue':
+            return self.blue
+        else:
+            return self.green
+
     def __repr__(self) -> str:
         return f"<{self.red} red, {self.blue} blue, {self.green} green>"
 
@@ -72,7 +80,22 @@ def part1(lines):
 
 
 def part2(lines):
-    pass
+    power_of_minimum_cubes = []
+    for line in lines:
+        game = parse_game(line)
+        red_cubes = []
+        blue_cubes = []
+        green_cubes = []
+        for cube in game.cubes:
+            red_cubes.append(cube.get_count('red'))
+            blue_cubes.append(cube.get_count('blue'))
+            green_cubes.append(cube.get_count('green'))
+        min_red_cubes = max(red_cubes)
+        min_blue_cubes = max(blue_cubes)
+        min_green_cubes = max(green_cubes)
+        power_of_minimum_cubes.append(min_red_cubes * min_blue_cubes * min_green_cubes)
+    return sum(power_of_minimum_cubes)
+
 
 
 def main():
