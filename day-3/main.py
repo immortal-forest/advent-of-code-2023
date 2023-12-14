@@ -82,7 +82,7 @@ def find_numbers(line: str, pos: int):
     return [int(number)]
 
 
-def find_adjacent(l_index: int, c_pos: int):
+def find_adjacent(l_index: int, c_pos: int, filter: bool):
     lines =  get_lines()
     
     current_line_pos = l_index
@@ -104,10 +104,27 @@ def find_adjacent(l_index: int, c_pos: int):
     current_line_nums = find_numbers(lines[current_line_pos], c_pos)
 
     _t = [prev_line_nums, current_line_nums, next_line_nums]
-#    filter_t = [i for i in _t if len(i) != 0]
-    filter_t = list(chain.from_iterable(_t))
+    if filter:
+        filter_t = list(chain.from_iterable(_t))
+        return filter_t
+    else:
+        return _t
 
-    return filter_t
+
+def find_adjacent_only(l_index: int, c_pos: int):
+    nums = find_adjacent(l_index, c_pos, False)
+    numbers = []
+
+    # each part is list
+    for part in nums:
+        if len(part) == 0:  # no adjacent number
+            continue
+        numbers.extend(part)
+
+    if len(numbers) == 1:
+        return []
+
+    return numbers
 
 
 def part1(lines):
@@ -117,10 +134,27 @@ def part1(lines):
         for pos, char in enumerate(line):
             if char in symbols:
                  # get the numbers adjacent to the char
-                 nums = find_adjacent(index, pos)
+                 nums = find_adjacent(index, pos, True)
                  if len(nums) == 0:
                      continue
                  adjacent_numbers.extend(nums)
+
+    return sum(adjacent_numbers)
+
+
+def part2(lines):
+    adjacent_numbers = []
+
+    for index, line in enumerate(lines):
+        for pos, char in enumerate(line):
+            if char  == '*':
+                # get only numbers adjacent to *
+                nums = find_adjacent_only(index, pos)
+                if len(nums) == 0:
+                    continue
+
+                a, b = nums
+                adjacent_numbers.append(a * b)
 
     return sum(adjacent_numbers)
 
@@ -130,7 +164,7 @@ def main():
     print("\n========== Part - 1 ==========")
     print(f"Sum: {part1(lines)}\n")
     print("\n========== Part - 2 ==========")
-    print("\n")
+    print(f"Sum: {part2(lines)}\n")
 
 
 if __name__ == "__main__":
