@@ -17,7 +17,7 @@ def parse_line(line: str):
     card_id = card_part.replace("Card ", '')
     winning_numbers, card_numbers = num_part.split("|")
     return Card(
-        card_id,
+        int(card_id),
         list(filter(None, winning_numbers.strip().split(" "))),
         list(filter(None, card_numbers.strip().split(" ")))
     )
@@ -48,10 +48,26 @@ def part1(lines):
     return sum(scratchcard_worth)
 
 
+def process_cards(original_cards: dict):
+    pass
+
+
+def part2(lines):
+    size = len(lines)
+    for line in lines:
+        card = parse_line(line)
+        _size = len(card.matching_numbers)
+        cp = [i for i in range(card.id + 1, _size + 1 + card.id) if i <= size]
+    
+    return count
+
+
 def main():
     lines = get_lines()
     print("\n========== Part - 1 ==========")
     print(f"Points: {part1(lines)}\n")
+    print("\n========== Part - 2 ==========")
+    print(f"Total: {part2(lines)}\n")
 
 
 if __name__ == '__main__':
