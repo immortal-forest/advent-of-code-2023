@@ -59,7 +59,7 @@ def part2(lines):
         _size = len(card.matching_numbers)
         cp = [i for i in range(card.id + 1, _size + 1 + card.id) if i <= size]
     
-    return count
+    return
 
 
 def main():
