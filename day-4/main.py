@@ -48,18 +48,34 @@ def part1(lines):
     return sum(scratchcard_worth)
 
 
-def process_cards(original_cards: dict):
-    pass
+def process_cards(original_cards: dict, card_id):
+    count = 1
+    for card in original_cards[str(card_id)]['cards']:
+        if original_cards[str(card_id)]['copies']:
+            count += process_cards(original_cards, card)
+        else:
+            count += 1
+    return count
 
 
 def part2(lines):
     size = len(lines)
+    original_cards = {}
     for line in lines:
         card = parse_line(line)
         _size = len(card.matching_numbers)
         cp = [i for i in range(card.id + 1, _size + 1 + card.id) if i <= size]
+        original_cards[str(card.id)] = {
+            "copies": True if cp else False,
+            "cards": cp
+        }
     
-    return
+    count = 0
+    for card in range(1, 207):
+        count += process_cards(original_cards, card)
+        print(count)
+
+    return count
 
 
 def main():
