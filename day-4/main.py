@@ -73,7 +73,6 @@ def part2(lines):
     count = 0
     for card in range(1, 207):
         count += process_cards(original_cards, card)
-        print(count)
 
     return count
 
